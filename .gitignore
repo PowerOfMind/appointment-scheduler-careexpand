@@ -6,8 +6,14 @@ node_modules/
 # Expo
 .expo/
 dist/
+build/
 web-build/
 expo-env.d.ts
+.expo-shared
+
+.DS_Store
+
+.env
 
 # Native
 *.orig.*
