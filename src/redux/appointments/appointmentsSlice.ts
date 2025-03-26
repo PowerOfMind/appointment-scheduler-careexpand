@@ -1,4 +1,3 @@
-// src/redux/appointments/appointmentsSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { nanoid } from "@reduxjs/toolkit";
@@ -23,7 +22,6 @@ const initialState: AppointmentsState = {
   error: null,
 };
 
-// Async thunk
 export const getAppointments = createAsyncThunk(
   "appointments/getAppointments",
   async (_, thunkAPI) => {
@@ -31,7 +29,6 @@ export const getAppointments = createAsyncThunk(
       const response = await axios.get(
         "https://jsonplaceholder.typicode.com/posts"
       );
-      // Adaptamos los datos mock para que encajen
       const adapted = response.data.slice(0, 10).map((item: any) => ({
         id: String(item.id),
         name: item.title,
@@ -46,18 +43,14 @@ export const getAppointments = createAsyncThunk(
   }
 );
 
-// Async thunk para crear cita
 export const createAppointment = createAsyncThunk(
   'appointments/createAppointment',
   async (appointment: Omit<Appointment, 'id'>, thunkAPI) => {
     try {
-      // Simulación de envío a una API (reqres permite POST)
       await axios.post('https://reqres.in/api/appointments', appointment);
-
-      // Creamos una cita con ID local (en real API, lo devolvería el backend)
       return {
         ...appointment,
-        id: nanoid(), // ID local simulado
+        id: nanoid(),
       };
     } catch (error) {
       return thunkAPI.rejectWithValue('Failed to create appointment');
@@ -94,14 +87,13 @@ const appointmentsSlice = createSlice({
         createAppointment.fulfilled,
         (state, action: PayloadAction<Appointment>) => {
           state.loading = false;
-          state.list.unshift(action.payload); // Añadir al principio
+          state.list.unshift(action.payload);
         }
       )
       .addCase(createAppointment.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
-    
   },
 });
 

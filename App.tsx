@@ -8,7 +8,6 @@ import {
 } from "@react-navigation/native-stack";
 
 import AppointmentsListScreen from "./src/screens/AppointmentsListScreen";
-import AppointmentFormScreen from "./src/screens/AppointmentFormScreen";
 
 const RootStack = createNativeStackNavigator();
 const MainStack = createNativeStackNavigator();
@@ -29,13 +28,6 @@ export default function App() {
             component={MainStackScreen}
             options={{ headerShown: false }}
           />
-          {/* <RootStack.Screen
-            name="AppointmentForm"
-            component={AppointmentFormScreen}
-            options={{
-              title: "New Appointment",
-            }}
-          /> */}
         </RootStack.Navigator>
       </NavigationContainer>
     </Provider>
