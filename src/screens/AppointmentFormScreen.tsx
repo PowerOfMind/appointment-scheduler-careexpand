@@ -94,7 +94,7 @@ const AppointmentFormScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.modalContainer}>
       <AnimatedInput
         label="Name"
         control={control}
@@ -195,6 +195,13 @@ const AnimatedPicker = ({ label, value, onPress, animatedStyle }: any) => (
 export default AppointmentFormScreen;
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
   container: {
     flex: 1,
     padding: 20,

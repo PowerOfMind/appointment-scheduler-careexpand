@@ -1,20 +1,31 @@
 # Appointment Scheduler App 📅
 
-A simple yet powerful appointment scheduling app built with **React Native (Expo)**, **TypeScript**, and **Redux Toolkit**.
+A well-crafted appointment scheduling app built with **React Native (Expo)**, **TypeScript**, and **Redux Toolkit**.
 
-This technical test demonstrates clean code architecture, SOLID principles, form validation, async API communication, animations, and testing.
+This technical challenge demonstrates clean architecture, state management, async API integration, modals, validation, animations, and testing — all with attention to detail and visual polish.
 
 ---
 
 ## 🚀 Features
 
 - ✅ View a list of scheduled appointments (GET)
-- ✅ Create a new appointment via form (POST)
+- ✅ Create a new appointment via modal popup (POST)
 - ✅ Global state management using Redux Toolkit
 - ✅ Form validation with **React Hook Form** + **Zod**
-- ✅ Loading and error handling on API requests
-- ✅ UI animations with `Animated.View`
-- ✅ Unit tests for Redux reducer and form validation
+- ✅ UI modal implemented as a **component**, not a screen
+- ✅ Loading and error feedback on all requests
+- ✅ Capitalized text styling for a polished UI
+- ✅ Entry animations using `Animated.View`
+- ✅ Unit tests for reducer and form logic
+
+---
+
+## 🧠 Key UX Details
+
+- ✨ Add button opens a **popup modal** (not a screen transition)
+- ✨ Modal slides from the bottom on Android with dismiss button
+- ✨ Capitalization applied to appointment titles and descriptions
+- ✨ Inputs styled for clarity, readability, and accessibility
 
 ---
 
@@ -26,18 +37,14 @@ This technical test demonstrates clean code architecture, SOLID principles, form
 - [React Hook Form](https://react-hook-form.com/)
 - [Zod](https://zod.dev/)
 - [React Native Animated](https://reactnative.dev/docs/animated)
-- [Jest](https://jestjs.io/) + [React Native Testing Library](https://testing-library.com/docs/react-native-testing-library/intro)
+- [Jest](https://jestjs.io/)
+- [React Native Testing Library](https://testing-library.com/docs/react-native-testing-library/intro)
 
 ---
 
 ## 📸 Screenshots
 
-<p align="center">
-  <img src="screenshot-1.png" width="250" />
-  <img src="screenshot-2.png" width="250" />
-</p>
-
-*(Add screenshots if possible for extra impact)*
+> *(Optional — recommended to add screenshots if you have time)*
 
 ---
 
@@ -46,5 +53,5 @@ This technical test demonstrates clean code architecture, SOLID principles, form
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/appointment-scheduler.git
+git clone https://github.com/PowerOfMind/appointment-scheduler-careexpand
 cd appointment-scheduler

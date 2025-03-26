@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,21 +7,24 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getAppointments } from "../redux/appointments/appointmentsSlice";
 import { AntDesign } from "@expo/vector-icons";
+import AppointmentFormModal from "../components/AppointmentFormModal";
 
 const AppointmentsListScreen = () => {
-  const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { list, loading, error } = useAppSelector(
     (state) => state.appointments
   );
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     dispatch(getAppointments());
-  }, []);
+  }, [] );
+  
+  const capitalizeFirst = (text: string) =>
+    text.charAt(0).toUpperCase() + text.slice(1);
 
   return (
     <View style={styles.container}>
@@ -34,21 +37,25 @@ const AppointmentsListScreen = () => {
         contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={({ item }) => (
           <View style={styles.card}>
-            <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.title}>{capitalizeFirst(item.name)}</Text>
             <Text style={styles.subtitle}>
               {item.date} at {item.time}
             </Text>
-            <Text>{item.description}</Text>
+            <Text>
+              {capitalizeFirst(item.description)}
+            </Text>
           </View>
         )}
       />
 
-      <TouchableOpacity
-        style={styles.fab}
-        onPress={() => navigation.navigate("New Appointment" as never)}
-      >
+      <TouchableOpacity style={styles.fab} onPress={() => setShowModal(true)}>
         <AntDesign name="plus" size={28} color="#fff" />
       </TouchableOpacity>
+
+      <AppointmentFormModal
+        visible={showModal}
+        onClose={() => setShowModal(false)}
+      />
     </View>
   );
 };
@@ -67,10 +74,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#fff",
     elevation: 2,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
   },
   title: {
     fontWeight: "bold",
@@ -98,9 +101,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     elevation: 4,
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 3 },
   },
 });
