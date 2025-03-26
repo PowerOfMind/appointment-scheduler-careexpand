@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Alert,
   Platform,
   Pressable,
+  Animated,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
@@ -27,6 +28,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const AppointmentFormScreen = () => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const { loading } = useAppSelector((state) => state.appointments);
@@ -71,26 +73,42 @@ const AppointmentFormScreen = () => {
     }
   };
 
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 400,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
+  const animatedStyle = {
+    opacity: fadeAnim,
+    transform: [
+      {
+        translateY: fadeAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [20, 0],
+        }),
+      },
+    ],
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Name</Text>
-      <Controller
+      <AnimatedInput
+        label="Name"
         control={control}
         name="name"
-        render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={styles.input}
-            value={value}
-            onChangeText={onChange}
-          />
-        )}
+        errors={errors.name}
+        animatedStyle={animatedStyle}
       />
-      {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
 
-      <Text style={styles.label}>Date</Text>
-      <Pressable onPress={() => setShowDatePicker(true)} style={styles.input}>
-        <Text>{date ? dayjs(date).format("YYYY-MM-DD") : "Select Date"}</Text>
-      </Pressable>
+      <AnimatedPicker
+        label="Date"
+        value={date ? dayjs(date).format("YYYY-MM-DD") : "Select Date"}
+        onPress={() => setShowDatePicker(true)}
+        animatedStyle={animatedStyle}
+      />
       {showDatePicker && (
         <DateTimePicker
           value={date || new Date()}
@@ -103,10 +121,12 @@ const AppointmentFormScreen = () => {
         />
       )}
 
-      <Text style={styles.label}>Time</Text>
-      <Pressable onPress={() => setShowTimePicker(true)} style={styles.input}>
-        <Text>{time ? dayjs(time).format("HH:mm") : "Select Time"}</Text>
-      </Pressable>
+      <AnimatedPicker
+        label="Time"
+        value={time ? dayjs(time).format("HH:mm") : "Select Time"}
+        onPress={() => setShowTimePicker(true)}
+        animatedStyle={animatedStyle}
+      />
       {showTimePicker && (
         <DateTimePicker
           value={time || new Date()}
@@ -120,30 +140,57 @@ const AppointmentFormScreen = () => {
         />
       )}
 
-      <Text style={styles.label}>Description</Text>
-      <Controller
+      <AnimatedInput
+        label="Description"
         control={control}
         name="description"
-        render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={styles.input}
-            value={value}
-            onChangeText={onChange}
-          />
-        )}
+        errors={errors.description}
+        animatedStyle={animatedStyle}
       />
-      {errors.description && (
-        <Text style={styles.error}>{errors.description.message}</Text>
-      )}
 
-      {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
-        <Button title="Submit" onPress={handleSubmit(onSubmit)} />
-      )}
+      <Animated.View style={[animatedStyle, styles.submitContainer]}>
+        {loading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+        )}
+      </Animated.View>
     </View>
   );
 };
+
+const AnimatedInput = ({ label, control, name, errors, animatedStyle }: any) => (
+  <Animated.View style={animatedStyle}>
+    <Text style={styles.label}>{label}</Text>
+    <Controller
+      control={control}
+      name={name}
+      render={({ field: { onChange, value } }) => (
+        <TextInput
+          style={styles.input}
+          value={value}
+          onChangeText={onChange}
+        />
+      )}
+    />
+    {errors && <Text style={styles.error}>{errors.message}</Text>}
+  </Animated.View>
+);
+
+const AnimatedPicker = ({ label, value, onPress, animatedStyle }: any) => (
+  <Animated.View style={animatedStyle}>
+    <Text style={styles.label}>{label}</Text>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.pickerButton,
+        pressed && { backgroundColor: "#e6f0ff" },
+      ]}
+    >
+      <Text style={styles.pickerText}>{value}</Text>
+    </Pressable>
+  </Animated.View>
+);
 
 export default AppointmentFormScreen;
 
@@ -186,17 +233,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
   },
-  submitButton: {
-    marginTop: 24,
-    backgroundColor: "#007AFF",
-    paddingVertical: 14,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  submitText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
+  submitContainer: {
+    marginTop: 32,
   },
 });
-
