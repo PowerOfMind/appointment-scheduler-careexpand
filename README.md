@@ -93,27 +93,27 @@ Tests include:
 ## 🔮 Improvements with more time
 
 - 🧠 Better error UI: Inline error messages, retry buttons, and network status indicators.
--
+
 - 💾 Persistent storage: Save appointments locally using AsyncStorage or connect to a - real backend with authentication.
--
+
 - 🎨 Dark mode: Dynamic theme support based on system preference or toggle.
--
+
 - 🌍 i18n: Multi-language support with react-i18next.
--
+
 - 📱 Responsive design: Improve layout for tablets and large-screen Android devices.
--
+
 - 💬 Toast feedback: Visual feedback for actions (e.g., "Appointment created").
--
+
 - 🎯 Search & filter: Filter by name/date or implement a search bar.
--
+
 - 🧪 Integration tests: Add form-to-API flow tests with mocks.
--
+
 - 🔄 Swipe to delete/edit: Add swipe gestures or context menus on each appointment.
--
+
 - 📅 Calendar view: Show appointments visually using a calendar component.
--
+
 - 🔐 Authentication flow: Add user login/register and link appointments per user.
--
+
 - 🧱 More modular components: Extract form fields and layout blocks into atomic/reusable components.
 
 ---
